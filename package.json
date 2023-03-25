@@ -1,0 +1,33 @@
+{
+  "name": "backend_engsoft_2023-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --clear src/server.ts",
+    "db": "json-server db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pedro-Baruch/BackEnd_EngSoft_2023-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pedro-Baruch/BackEnd_EngSoft_2023-1/issues"
+  },
+  "homepage": "https://github.com/Pedro-Baruch/BackEnd_EngSoft_2023-1#readme",
+  "dependencies": {
+    "@types/express": "^4.17.13",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "install": "^0.13.0",
+    "json-server": "^0.17.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.6",
+    "dotenv": "^16.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.7.4"
+  }
+}
