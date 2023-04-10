@@ -1,6 +1,5 @@
 import express, {Request, Response} from "express";
 import { router } from './routes';
-import { ReadVResult } from "fs";
 
 const app = express()
 
