@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { postRoutes } from "./post";
+import { authRouter } from "./authRoutes";
 
 const router = Router()
 
 // Rotas do projeto
-router.use('/posts', postRoutes)
+router.use('/auth',authRouter)
 
 export { router }
