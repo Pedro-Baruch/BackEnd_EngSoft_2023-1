@@ -22,25 +22,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const routes_1 = require("./routes");
-const cors_1 = __importDefault(require("cors"));
+exports.db = void 0;
+const mongodb_1 = require("mongodb");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-const port = process.env.PORT;
-const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
-app.use(express_1.default.json()); // Permitir arquivos json
-app.use(routes_1.router); // Utilizar as rotas da pasta routes
-// Conferindo express
-app.get('/', (req, res) => {
-    res.status(200).json({ success: 'connected...' });
-});
-// Config portas
-app.listen(port, () => {
-    console.log(`Application running on: http://localhost:${port}`);
-});
+const mongoURI = process.env.MONGO_URI;
+class MongoDatabase {
+    constructor() {
+        this.client = new mongodb_1.MongoClient(mongoURI, {
+            serverApi: {
+                version: mongodb_1.ServerApiVersion.v1,
+                strict: true,
+                deprecationErrors: true,
+            },
+        });
+        this.db = this.client.db("app-flutter");
+    }
+    getInstance() {
+        return this.db;
+    }
+}
+const db = new MongoDatabase().getInstance();
+exports.db = db;

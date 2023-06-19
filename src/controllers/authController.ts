@@ -119,4 +119,14 @@ export class AuthController{
 
         return res.status(200).json({success: "Senha alterada com sucesso"})
     }
+
+    public me = async (req: Request, res: Response) => {
+        
+        const id = req.params
+
+        const user = await this.users.findOne({_id: id})
+
+        console.log(user, id)
+        return res.status(200).json({User: user})
+    }
 }
