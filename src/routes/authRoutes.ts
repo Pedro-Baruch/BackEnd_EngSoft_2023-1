@@ -8,5 +8,6 @@ authRouter.post('/singup',authController.singup)
 authRouter.post('/singin',authController.singin)
 authRouter.post('/forgot-pass',authController.forgotpass)
 authRouter.post('/change-pass',authController.changepass)
+authRouter.post('/me/:id', authController.me)
 
 export { authRouter }
