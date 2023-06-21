@@ -8,6 +8,7 @@ const mongodb_1 = require("../database/mongodb");
 const passHelper_1 = require("../helpers/passHelper");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const forgotPassHelper_1 = require("../helpers/forgotPassHelper");
+const mongodb_2 = require("mongodb");
 class AuthController {
     constructor() {
         this.singup = async (req, res) => {
@@ -15,6 +16,7 @@ class AuthController {
             const foundUser = await this.users.findOne({ email });
             const passwordHash = await (0, passHelper_1.encrypt)(password);
             const ver = await (0, passHelper_1.validPass)(password);
+            const id = await this.users.countDocuments();
             if (foundUser) {
                 return res.status(409).json({ error: "já existe um usuário utilizando este email" });
             }
@@ -22,6 +24,7 @@ class AuthController {
                 return res.status(409).json({ error: "Senha incompativel com nosso critérios" });
             }
             const user = {
+                id: id + 1,
                 email,
                 name,
                 password: passwordHash,
@@ -84,10 +87,14 @@ class AuthController {
             return res.status(200).json({ success: "Senha alterada com sucesso" });
         };
         this.me = async (req, res) => {
-            const id = req.params;
-            const user = await this.users.findOne({ _id: id });
-            console.log(user, id);
+            const { id } = req.params;
+            const userId = new mongodb_2.ObjectId(id);
+            const user = await this.users.findOne(userId);
             return res.status(200).json({ User: user });
+        };
+        this.getUser = async (req, res) => {
+            const users = await this.users.find().toArray();
+            return res.status(200).json({ users });
         };
         this.users = mongodb_1.db.collection('users');
     }
