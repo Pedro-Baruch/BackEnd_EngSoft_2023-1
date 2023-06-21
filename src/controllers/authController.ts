@@ -5,6 +5,7 @@ import { User } from "../models/userModel"
 
 import bcrypt from "bcrypt"
 import { createRandomNumber } from "../helpers/forgotPassHelper"
+import { ObjectId } from "mongodb"
 
 export class AuthController{
     
@@ -23,6 +24,8 @@ export class AuthController{
         const passwordHash = await encrypt(password)
         const ver: number = await validPass(password)
 
+        const id = await this.users.countDocuments()
+
         if(foundUser){
             return res.status(409).json({error: "já existe um usuário utilizando este email"})
         }
@@ -32,6 +35,7 @@ export class AuthController{
         }
 
         const user = {
+            id: id+1,
             email,
             name,
             password: passwordHash,
@@ -122,11 +126,19 @@ export class AuthController{
 
     public me = async (req: Request, res: Response) => {
         
-        const id = req.params
+        const {id} = req.params
+        
+        const userId = new ObjectId(id)
 
-        const user = await this.users.findOne({_id: id})
+        const user = await this.users.findOne(userId)
 
-        console.log(user, id)
         return res.status(200).json({User: user})
+    }
+
+    public getUser = async (req: Request, res: Response) => {
+        
+        const users = await this.users.find().toArray()
+
+        return res.status(200).json({users})
     }
 }
